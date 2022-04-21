@@ -1,13 +1,4 @@
 /*
- * @Author: Opynicus
- * @Date: 2022-03-28 19:58:15
- * @LastEditTime: 2022-03-28 20:01:07
- * @LastEditors: Opynicus
- * @Description: binary serach tree
- * @FilePath: \leetcode\108.将有序数组转换为二叉搜索树.cpp
- * 可以输入预定的版权声明、个性签名、空行等
- */
-/*
  * @lc app=leetcode.cn id=108 lang=cpp
  *
  * [108] 将有序数组转换为二叉搜索树
@@ -27,28 +18,21 @@
  */
 class Solution {
 public:
-    TreeNode* insertIntoBST(TreeNode* root, int val) {
-        if (root == nullptr)
+    TreeNode* InOrder(vector<int>& nums,int left, int right) {
+        if (left > right)
         {
-            return new TreeNode(val);
+            return NULL;
         }
-        else if (val < root->val)
-        {
-            root->left = insertIntoBST(root->left, val);
-        }
-        else
-        {
-            root->right =  insertIntoBST(root->right, val);
-        }
+        int mid = left + (right - left) / 2;
+
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = InOrder(nums, left, mid - 1);
+        root->right = InOrder(nums, mid + 1, right);
         return root;
+        
     }
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        TreeNode* root = NULL;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            insertIntoBST(root,nums[i]);
-        }
-        return root;
+        return InOrder(nums, 0, nums.size() - 1);
     }
 };
 // @lc code=end
