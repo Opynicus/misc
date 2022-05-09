@@ -10,17 +10,15 @@
 #include <list>
 #include <iostream>
 
-
 class Page {
-public:
-    virtual void operation(int) = 0;
-    void info() const;
+ public:
+  virtual void operation(int capacity) = 0;
+  void info() const;
 
-protected:
-    int capacity{};
-    int cnt{};
-    int miss_cnt{};
+ protected:
+  int capacity{};
+  int cnt{};
+  int miss_cnt{};
 };
-
 
 #endif //OSLAB4_PAGE_H

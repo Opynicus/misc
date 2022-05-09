@@ -8,19 +8,19 @@
 #include "Fifo.h"
 #include "Lru.h"
 
-enum Permutation{
-    FIFO, LRU
+enum Permutation {
+  FIFO, LRU
 };
 
 class Method {
-public:
-    Method(int permutation, int _capacity);
-    void initTestCase(std::vector<int> test_case_);
-    std::vector<int> test_case;
-    int permutation;
-    Fifo fifo;
-    Lru lru;
+ public:
+  Fifo fifo;
+  Lru lru;
+  Method(int permutation, int _capacity, std::vector<int> test_case);
+  void startPermutationjob();
+ private:
+  std::vector<int> test_case;
+  int permutation;
 };
-
 
 #endif //OSLAB4_METHOD_H
