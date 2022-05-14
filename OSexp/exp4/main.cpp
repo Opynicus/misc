@@ -1,3 +1,12 @@
+/*
+ * @Author: Opynicus
+ * @Date: 2022-05-02 16:35:13
+ * @LastEditTime: 2022-05-14 20:47:09
+ * @LastEditors: Opynicus
+ * @Description: 
+ * @FilePath: \OSexp\exp4\main.cpp
+ * 可以输入预定的版权声明、个性签名、空行等
+ */
 #include "Method.h"
 
 int main() {
