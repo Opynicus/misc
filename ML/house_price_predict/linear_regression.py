@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from scipy.stats import boxcox_normmax
 from scipy.special import boxcox1p
-
 train_set_path = "./dataset/train.csv"
 test_set_path = "./dataset/test.csv"
 
@@ -15,6 +14,21 @@ def dataProcess(dataset_path):
 
 # 显示数据集的散点图
 def showScatter(dataset):
+    # Utilities与SalePrice
+    plt.scatter(x=dataset.Utilities, y=dataset.SalePrice, color='purple')
+    plt.grid(c='silver', linestyle='--')
+    plt.savefig('Utilities_SalePrice_Scatter.png')
+    plt.show()
+    # LotArea与SalePrice
+    plt.scatter(x=dataset.LotArea, y=dataset.SalePrice, color='darkblue')
+    plt.grid(c='silver', linestyle='--')
+    plt.savefig('LotArea_SalePrice_Scatter.png')
+    plt.show()
+    # Neighborhood与SalePrice
+    plt.scatter(x=dataset.Neighborhood, y=dataset.SalePrice, color='blueviolet')
+    plt.grid(c='silver', linestyle='--')
+    plt.savefig('Neighborhood_SalePrice_Scatter.png')
+    plt.show()
     # OverallQual与SalePrice
     plt.scatter(x=dataset.OverallQual, y=dataset.SalePrice, color='b')
     plt.grid(c='silver', linestyle='--')
@@ -35,10 +49,16 @@ def showScatter(dataset):
     plt.grid(c='silver', linestyle='--')
     plt.savefig('GrLivArea_SalePrice_Scatter.png')
     plt.show()
+    # Heating与SalePrice
+    plt.scatter(x=train.Heating, y=train.SalePrice, color='red')
+    plt.grid(c='silver', linestyle='--')
+    plt.savefig('Heating_SalePrice_Scatter.png')
+    plt.show()
 
 
 def removeScatter():
     train.drop(train[(train['OverallQual'] < 5) & (train['SalePrice'] > 200000)].index, inplace=True)
+    train.drop(train[(train['LotArea'] > 100000) & (train['SalePrice'] > 200000)].index, inplace=True)
     train.drop(train[(train['YearBuilt'] < 1900) & (train['SalePrice'] > 400000)].index, inplace=True)
     train.drop(train[(train['YearBuilt'] < 2000) & (train['SalePrice'] > 700000)].index, inplace=True)
     train.drop(train[(train['TotalBsmtSF'] > 6000) & (train['SalePrice'] > 10000)].index, inplace=True)
@@ -126,17 +146,20 @@ def predict(merge_set):
     test_arr = mrg_set[len(train):]
     train_arr['1'] = 1  # 添加一列1
     T_x = np.matrix(train_arr)
-    T_y = np.matrix(house_price.reshape(house_price.shape[0], 1))  # 一维转置
+    T_y = np.matrix(house_price.reshape(house_price.shape[0], 1))
     T_xx = T_x.T * T_x
-    T_xn = np.linalg.pinv(T_xx)  # 广义逆矩阵
+    T_xn = np.linalg.pinv(T_xx)
     T_w = T_xn * T_x.T * T_y
 
     # 回归
     test_arr['1'] = 1
     M_x = np.matrix(test_arr)
     M_y = M_x * T_w
-    print(M_y)
-    pd.DataFrame(M_y).to_csv("linear_regression_result.csv")
+    result = np.array(M_y).flatten()
+    print(result)
+    pd.DataFrame(data={'Id': range(1461, 1461 + len(result)), 'SalePrice': result}).to_csv("linear_regression_result.csv",
+                                                                                     columns=['Id', 'SalePrice'],
+                                                                                     index=False)
 
 
 if __name__ == '__main__':
