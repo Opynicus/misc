@@ -18,19 +18,19 @@
  */
 class Solution {
 public:
-    int dfs(TreeNode* root, int &res) {
+    int res = 0;
+    int calSum(TreeNode* root) {
         if (root == nullptr)
         {
             return 0;
         }
-        int left_sum = dfs(root->left, res);
-        int right_sum = dfs(root->right, res);
+        auto left_sum = calSum(root->left);
+        auto right_sum = calSum(root->right);
         res += abs(left_sum - right_sum);
         return left_sum + right_sum + root->val;
     }
     int findTilt(TreeNode* root) {
-        int res = 0;
-        dfs(root, res);
+        calSum(root);
         return res;
     }
 };
