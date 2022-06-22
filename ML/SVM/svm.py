@@ -1,3 +1,4 @@
+import numpy as np
 import seaborn as sn
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,8 +11,8 @@ from sklearn.metrics import confusion_matrix
 url_wine = 'http://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data'
 columns = ['category', 'Alcohol', 'Malic acid ', 'Ash', 'Alcalinity of ash',
            'Magnesium', 'Total phenols', 'Flavanoid',
-           'Nonflavanoid phenols', 'Proanthocyanins ', 'Color intensity ',
-           'Hue ', 'OD280/OD315 of diluted wines', 'Proline ']
+           'Nonflavanoid phenols', 'Proanthocyanins ', 'Color intensity',
+           'Hue ', 'OD280/OD315 of diluted wines', 'Proline']
 wine_data = pd.read_csv(url_wine, header=None, names=columns)
 wine_data = wine_data.sample(frac=1.0)
 wine_feature = wine_data.iloc[:, 1:14].values
@@ -48,4 +49,29 @@ for i, clf in enumerate((svc, linear_svc, rbf_svc, poly_svc)):
     sn.heatmap(wine_confusion, annot=True, fmt='d')
     plt.title(titles[i])
 plt.savefig('svm_comparison.png')
+plt.show()
+
+Y = wine_data['category'].values
+X1 = wine_data[['Proline', 'Color intensity']].values
+x_min, x_max = X1[:, 0].min() - 1, X1[:, 0].max() + 1
+y_min, y_max = X1[:, 1].min() - 1, X1[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.2),
+                     np.arange(y_min, y_max, 0.2))
+x_train, x_test, y_train, y_test = train_test_split(X1, Y, test_size=0.25,
+                                                    random_state=0)
+svc = SVC(kernel='linear').fit(x_train, y_train)  # 线性
+
+Z = svc.predict(np.array([xx.ravel(), yy.ravel()]).T)
+Z = Z.reshape(xx.shape)
+
+plt.contour(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.8)
+plt.scatter(X1[:, 0], X1[:, 1], c=Y, cmap='jet')
+plt.xlabel("Proline")
+plt.ylabel("Colour_intensity")
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+plt.xticks(())
+plt.yticks(())
+plt.title("Decision Boundary")
+plt.savefig("decision_boundary.png")
 plt.show()
