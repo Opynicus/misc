@@ -66,6 +66,7 @@ Z = Z.reshape(xx.shape)
 
 plt.contour(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.8)
 plt.scatter(X1[:, 0], X1[:, 1], c=Y, cmap='jet')
+# plt.scatter(x_test[:, 0], x_test[:, 1], c=y_test, cmap='jet') #对测试集做决策边界
 plt.xlabel("Proline")
 plt.ylabel("Colour_intensity")
 plt.xlim(xx.min(), xx.max())
