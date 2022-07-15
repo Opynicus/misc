@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="image">
+    <file>bg.jpg</file>
+    <file>broom.png</file>
+    <file>flower-tulip.png</file>
+    <file>logo.png</file>
+    <file>logo2.png</file>
+    <file>pexels-dominika-roseclay-1877920.jpg</file>
+    <file>pexels-min-an-1650035.jpg</file>
+  </qresource>
+</RCC>
